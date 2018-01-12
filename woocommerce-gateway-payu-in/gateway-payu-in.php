@@ -4,8 +4,8 @@
 	Plugin URI: http://woothemes.com/woocommerce
 	Description: Extends WooCommerce. Provides a <a href="http://www.payu.in/">PayU India</a> gateway for WooCommerce.
 	Version: 1.6.0
-	Author: Daniel Dudzic
-	Author URI: http://danieldudzic.com/
+	Author: payumoney.com
+	Author URI: http://payumoney.com
 	Requires at least: 3.8
 	Tested up to: 3.8
 */

@@ -7,7 +7,7 @@
 * @class WC_Gateway_Payu_In
 * @package WooCommerce
 * @category Payment Gateways
-* @author Daniel Dudzic
+* @author PayUmoney
 *
 *
 * Table Of Contents
@@ -47,11 +47,11 @@ class WC_Gateway_Payu_In extends WC_Payment_Gateway {
 		global $woocommerce;
 
         $this->id				= 'payu_in';
-        $this->method_title = __( 'PayUMoney', 'woocommerce_payu_in' );
+        $this->method_title = __( 'PayUmoney', 'woocommerce_payu_in' );
         $this->icon 			= $this->plugin_url() . '/assets/images/icon.png';
         $this->has_fields 		= true;
         $this->liveurl			= 'https://secure.payu.in/_payment';
-        $this->testurl			= 'https://test.payu.in/_payment';
+        $this->testurl			= 'https://sandboxsecure.payu.in/_payment';
 
       	// Load the form fields.
 		$this->init_form_fields();
@@ -70,12 +70,7 @@ class WC_Gateway_Payu_In extends WC_Payment_Gateway {
 		$this->title 			= $this->settings['title'];
 		$this->description  	= $this->settings['description'];
 		$this->merchantid   	= $this->settings['merchantid'];
-		$this->salt   			= $this->settings['salt'];
-		$this->cc_method 		= $this->settings['cc_method'];
-		$this->dc_method    	= $this->settings['dc_method'];
-		$this->nb_method   	    = $this->settings['nb_method'];
-		$this->emi_method   	= $this->settings['emi_method'];
-		$this->cod_method		= $this->settings['cod_method'];
+		$this->salt   			= $this->settings['salt'];		
 		$this->testmode			= $this->settings['testmode'];
 
 		// IPN
@@ -105,73 +100,38 @@ class WC_Gateway_Payu_In extends WC_Payment_Gateway {
 			'enabled' => array(
 							'title' => __( 'Enable/Disable', 'woocommerce_payu_in' ),
 							'type' => 'checkbox',
-							'label' => __( 'Enable PayUMoney', 'woocommerce_payu_in' ),
+							'label' => __( 'Enable PayUmoney', 'woocommerce_payu_in' ),
 							'default' => 'yes'
 						),
 			'title' => array(
 							'title' => __( 'Title', 'woocommerce_payu_in' ),
 							'type' => 'text',
 							'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce_payu_in' ),
-							'default' => __( 'PayUMoney', 'woocommerce_payu_in' )
+							'default' => __( 'PayUmoney', 'woocommerce_payu_in' )
 						),
 			'description' => array(
 							'title' => __( 'Description', 'woocommerce_payu_in' ),
 							'type' => 'textarea',
 							'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce_payu_in' ),
-							'default' => __( 'Direct payment via PayUMoney. PayUMoney accepts VISA, MasterCard, Debit Cards and the Net Banking of all major banks.', 'woocommerce_payu_in' ),
+							'default' => __( 'Direct payment via PayUmoney. PayUmoney accepts VISA, MasterCard, Debit Cards and the Net Banking of all major banks.', 'woocommerce_payu_in' ),
 						),
 			'merchantid' => array(
 							'title' => __( 'Merchant Key', 'woocommerce_payu_in' ),
 							'type' => 'text',
-							'description' => __( 'This key is generated at the time of activation of your site and helps to uniquely identify you to PayUMoney', 'woocommerce_payu_in' ),
+							'description' => __( 'This key is generated at the time of activation of your site and helps to uniquely identify you to PayUmoney', 'woocommerce_payu_in' ),
 							'default' => ''
 						),
 			'salt' => array(
 							'title' => __( 'SALT', 'woocommerce_payu_in' ),
 							'type' => 'text',
-							'description' => __( 'String of characters provided by PayUMoney', 'woocommerce_payu_in' ),
+							'description' => __( 'String of characters provided by PayUmoney', 'woocommerce_payu_in' ),
 							'default' => ''
-						),
-
-			'cc_method' => array(
-							'title' => __( 'Credit Card', 'woocommerce_payu_in' ),
-							'type' => 'checkbox',
-							'label' => __( 'Enable Credit Card payment method tab pre-select on the Checkout page', 'woocommerce_payu_in' ),
-							'default' => 'no'
-						),
-
-			'dc_method' => array(
-							'title' => __( 'Debit Card', 'woocommerce_payu_in' ),
-							'type' => 'checkbox',
-							'label' => __( 'Enable Debit Card payment method tab pre-select on the Checkout page', 'woocommerce_payu_in' ),
-							'default' => 'no'
-						),
-
-			'nb_method' => array(
-							'title' => __( 'Net Banking', 'woocommerce_payu_in' ),
-							'type' => 'checkbox',
-							'label' => __( 'Enable Net Banking payment method tab pre-select on the Checkout page', 'woocommerce_payu_in' ),
-							'default' => 'no'
-						),
-
-			'emi_method' => array(
-							'title' => __( 'EMI', 'woocommerce_payu_in' ),
-							'type' => 'checkbox',
-							'label' => __( 'Enable EMI payment method tab pre-select on the Checkout page', 'woocommerce_payu_in' ),
-							'default' => 'no'
-						),
-
-			'cod_method' => array(
-							'title' => __( 'COD', 'woocommerce_payu_in' ),
-							'type' => 'checkbox',
-							'label' => __( 'Enable COD payment method tab pre-select on the Checkout page', 'woocommerce_payu_in' ),
-							'default' => 'no'
 						),
 
 			'testmode' => array(
 							'title' => __( 'Test Mode', 'woocommerce_payu_in' ),
 							'type' => 'checkbox',
-							'label' => __( 'Enable PayUMoney Test Mode', 'woocommerce_payu_in' ),
+							'label' => __( 'Enable PayUmoney Test Mode', 'woocommerce_payu_in' ),
 							'default' => 'no'
 						)
 			);
@@ -202,8 +162,8 @@ class WC_Gateway_Payu_In extends WC_Payment_Gateway {
 	 */
 	public function admin_options() {
     	?>
-    	<h3><?php _e( 'PayUMoney', 'woocommerce_payu_in' ); ?></h3>
-    	<p><?php _e( 'PayUMoney works by sending the user to <a href="https://www.payumoney.com/">PayUMoney</a> to enter their payment information. Note that PayUMoney will only take payments in Indian Rupee.', 'woocommerce_payu_in' ); ?></p>
+    	<h3><?php _e( 'PayUmoney', 'woocommerce_payu_in' ); ?></h3>
+    	<p><?php _e( 'PayUmoney works by sending the user to <a href="https://www.payumoney.com/">PayUmoney</a> to enter their payment information. Note that PayUmoney will only take payments in Indian Rupee.', 'woocommerce_payu_in' ); ?></p>
 		<?php
 			if ( get_option( 'woocommerce_currency' ) == 'INR' ) {
 		?>
@@ -216,7 +176,7 @@ class WC_Gateway_Payu_In extends WC_Payment_Gateway {
 		<?php
 			} else {
 		?>
-		<div class="inline error"><p><strong><?php _e( 'Gateway Disabled', 'woocommerce_payu_in' ); ?></strong> <?php echo sprintf( __( 'Choose Indian Rupee (Rs.) as your store currency in <a href="%s">Pricing Options</a> to enable the PayUMoney Gateway.', 'woocommerce_payu_in' ), admin_url( '?page=woocommerce&tab=general' ) ); ?></p></div>
+		<div class="inline error"><p><strong><?php _e( 'Gateway Disabled', 'woocommerce_payu_in' ); ?></strong> <?php echo sprintf( __( 'Choose Indian Rupee (Rs.) as your store currency in <a href="%s">Pricing Options</a> to enable the PayUmoney Gateway.', 'woocommerce_payu_in' ), admin_url( '?page=woocommerce&tab=general' ) ); ?></p></div>
 		<?php
 		} // End check currency
 	} // End admin_options()
@@ -229,24 +189,6 @@ class WC_Gateway_Payu_In extends WC_Payment_Gateway {
 	 */
     function payment_fields() {
 		if ( $this->description ) { echo wpautop( wptexturize( $this->description ) ); }
-
-		if($this->cc_method == 'yes' || $this->dc_method == 'yes' || $this->nb_method == 'yes' || $this->emi_method == 'yes' || $this->cod_method == 'yes') {
-		?>
-
-		<fieldset>
-			<p class="form-row">
-				<label for="pg"><?php echo __("Choose a Payment Method", 'woocommerce_payu_in') ?></label>
-				<?php if($this->cc_method == 'yes') { ?><input type="radio" name="pg" value="CC">Credit Card<br /><?php } ?>
-				<?php if($this->dc_method == 'yes') { ?><input type="radio" name="pg" value="DC">Debit Card<br /><?php } ?>
-				<?php if($this->nb_method == 'yes') { ?><input type="radio" name="pg" value="NB">Net Banking<br /><?php } ?>
-				<?php if($this->emi_method == 'yes') { ?><input type="radio" name="pg" value="EMI">EMI<br /><?php } ?>
-				<?php if($this->cod_method == 'yes') { ?><input type="radio" name="pg" value="COD">COD<?php } ?>
-			</p>
-			<div class="clear"></div>
-		</fieldset>
-
-		<?php
-		}
 
     } // End payment_fields()
 
@@ -269,6 +211,7 @@ $productinfo = "productinfo";
 		$hash_data['productinfo'] 		 = $productinfo;
 		$hash_data['firstname']			 = $order->billing_first_name;
 		$hash_data['email'] 			 = $order->billing_email;
+		$hash_data['udf5'] 			 	 = "WooCommerce_v_2.x";
 		$hash_data['hash'] 				 = $this->calculate_hash_before_transaction($hash_data);
 
 
@@ -314,6 +257,7 @@ $productinfo = "productinfo";
 
 
 		$payuform .= '<input type="hidden" name="txnid" value="' . $hash_data['txnid'] . '" />' . "\n";
+		$payuform .= '<input type="hidden" name="udf5" value="' . $hash_data['udf5'] . '" />' . "\n";
 		$payuform .= '<input type="hidden" name="hash" value="' . $hash_data['hash'] . '" />' . "\n";
 
 		// Get the right URL in case the test mode is enabled
@@ -324,12 +268,12 @@ $productinfo = "productinfo";
 		// The form
 		return '<form action="' . $posturl . '" method="POST" name="payform" id="payform">
 				' . $payuform . '
-				<input type="submit" class="button" id="submit_payu_in_payment_form" value="' . __( 'Pay via PayU', 'woocommerce_payu_in' ) . '" /> <a class="button cancel" href="' . $order->get_cancel_order_url() . '">'.__( 'Cancel order &amp; restore cart', 'woocommerce_payu_in' ) . '</a>
+				<input type="submit" class="button" id="submit_payu_in_payment_form" value="' . __( 'Pay via PayUmoney', 'woocommerce_payu_in' ) . '" /> <a class="button cancel" href="' . $order->get_cancel_order_url() . '">'.__( 'Cancel order &amp; restore cart', 'woocommerce_payu_in' ) . '</a>
 				<script type="text/javascript">
 					jQuery(function(){
 						jQuery("body").block(
 							{
-								message: "<img src=\"' . $woocommerce->plugin_url() . '/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayU to make payment.', 'woothemes').'",
+								message: "<img src=\"' . plugins_url() . '/woocommerce-gateway-payu-in/assets/images/ajax-loader.gif\" alt=\"Redirecting...\" />'.__('Thank you for your order. We are now redirecting you to PayU to make payment.', 'woothemes').'",
 								overlayCSS:
 								{
 									background: "#fff",
@@ -451,7 +395,7 @@ function payment_success($txnid) {
 				return false;
 			}
 
-			$order->add_order_note( __( 'PayUMoney payment completed', 'woocommerce_payu_in' ) . ' (Transaction id: ' . $txnid . ')' );
+			$order->add_order_note( __( 'PayUmoney payment completed', 'woocommerce_payu_in' ) . ' (Transaction id: ' . $txnid . ')' );
 			$order->payment_complete();
 
 			$woocommerce->cart->empty_cart();
@@ -578,7 +522,7 @@ function payment_success($txnid) {
             throw new Exception(__('There was a problem connecting to the payment gateway.', 'woocommerce_payu_in'));
 
         if (empty($response['body']))
-            throw new Exception(__('Empty PayUMoney response.', 'woocommerce_payu_in'));
+            throw new Exception(__('Empty PayUmoney response.', 'woocommerce_payu_in'));
 
         $parsed_response = $response['body'];
 
